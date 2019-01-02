@@ -21,13 +21,25 @@ int main(void)
 					  -1,
 					  SDL_RENDERER_ACCELERATED);
 
-	SDL_RenderClear(main_renderer);
+	SDL_RenderClear(main_renderer);	
 
 	//Changing renderer color to draw points
 	SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, 255);
 
+	//creating rect to represent "start" option
+	SDL_Rect start;
+
+	start.x = 800/2;
+	start.y = 600/2;
+	start.h = 50;
+	start.w = 100;
+
+	SDL_RenderFillRect(main_renderer, &start);
+
+	SDL_RenderDrawRect(main_renderer, &start);
+
 	//Actually drawing on screen
-	SDL_RenderDrawPoint(main_renderer, 1, 1);
+	//SDL_RenderDrawPoint(main_renderer, 1, 1);
 
 	//Updating screen
 	SDL_RenderPresent(main_renderer);
