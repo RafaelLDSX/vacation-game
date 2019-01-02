@@ -34,6 +34,9 @@ int main(void)
 	start.h = 50;
 	start.w = 100;
 
+	//Creating point to represent mouse position
+	SDL_Point mouse;
+
 	SDL_RenderFillRect(main_renderer, &start);
 
 	SDL_RenderDrawRect(main_renderer, &start);
@@ -44,8 +47,35 @@ int main(void)
 	//Updating screen
 	SDL_RenderPresent(main_renderer);
 
-	//Waiting 3 seconds
-	SDL_Delay(3000);
+	//Creating polling of events
+	SDL_Event e;
+	while(1)
+	{
+		while(SDL_PollEvent(&e)){
+			switch(e.type)
+			{ 
+				//case Alt+F4 or similar
+				case SDL_QUIT: 
+					SDL_DestroyRenderer(main_renderer);
+					SDL_DestroyWindow(main_window);
+					SDL_Quit();
+					return 0;
+
+				//case left click is used, check what button was pressed
+				case SDL_MOUSEBUTTONDOWN:
+
+					//writing in SDL_Point mouse its current position
+					SDL_GetMouseState(&mouse.x, &mouse.y);
+
+					//if collides with rect
+					if( SDL_PointInRect(&mouse, &start) ){
+						printf("Setting up game...\n");
+					}
+					break;
+			}
+
+		}
+	}
 
 	//Destroying window and quitting SDL
 	SDL_DestroyWindow(main_window);
