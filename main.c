@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "game.c"
 
 int main(void)
 {
@@ -29,8 +30,8 @@ int main(void)
 	//creating rect to represent "start" option
 	SDL_Rect start;
 
-	start.x = 800/2;
-	start.y = 600/2;
+	start.x = 350;
+	start.y = 275;
 	start.h = 50;
 	start.w = 100;
 
@@ -69,7 +70,16 @@ int main(void)
 
 					//if collides with rect
 					if( SDL_PointInRect(&mouse, &start) ){
+
+						//starting the real game
 						printf("Setting up game...\n");
+						game(main_renderer, e, mouse);
+
+						//redrawing start button after exiting from the game
+						SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, 255);
+						SDL_RenderFillRect(main_renderer, &start);
+						SDL_RenderDrawRect(main_renderer, &start);
+						SDL_RenderPresent(main_renderer);
 					}
 					break;
 			}
