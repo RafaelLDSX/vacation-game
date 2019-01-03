@@ -3,6 +3,9 @@
 
 int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 {
+	//button cooldown
+	int cooldown = 0;
+
 	//turning screen to black
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -52,6 +55,9 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 	while(1)
 	{
+		if ( cooldown > 0 ){
+			cooldown -= 1;
+		}
 		while(SDL_PollEvent(&e)){
 			switch(e.type)
 			{ 
@@ -68,85 +74,64 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 					SDL_GetMouseState(&mouse.x, &mouse.y);
 
 					//if collides with rect
-					if( SDL_PointInRect(&mouse, &red) ){
+					if( SDL_PointInRect(&mouse, &red) && cooldown <= 0 ){
+
+						cooldown = 20;
+
+						printf("1\n");
 
 						SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
 
 						SDL_RenderFillRect(renderer, &red);
-
-						SDL_RenderDrawRect(renderer, &red);
-
-						SDL_RenderPresent(renderer);
 					}
-					else if( SDL_PointInRect(&mouse, &green) ){
+					else if( SDL_PointInRect(&mouse, &green) && cooldown <= 0 ){
 						
+						cooldown = 20;
+
+						printf("2\n");
+
 						SDL_SetRenderDrawColor(renderer, 0, 100, 0, 255);
 
 						SDL_RenderFillRect(renderer, &green);
-
-						SDL_RenderDrawRect(renderer, &green);
-
-						SDL_RenderPresent(renderer);
 					}
-					else if( SDL_PointInRect(&mouse, &blue) ){
+					else if( SDL_PointInRect(&mouse, &blue) && cooldown <= 0 ){
 						
+						cooldown = 20;
+
+						printf("3\n");
+
 						SDL_SetRenderDrawColor(renderer, 0, 0, 100, 255);
 
 						SDL_RenderFillRect(renderer, &blue);
-
-						SDL_RenderDrawRect(renderer, &blue);
-
-						SDL_RenderPresent(renderer);
-					}
-					break;
-
-				case SDL_MOUSEBUTTONUP:
-
-					//writing in SDL_Point mouse its current position
-					SDL_GetMouseState(&mouse.x, &mouse.y);
-
-					//if collides with rect
-					if( SDL_PointInRect(&mouse, &red) ){
-
-						SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-
-						SDL_RenderFillRect(renderer, &red);
-
-						SDL_RenderDrawRect(renderer, &red);
-
-						SDL_RenderPresent(renderer);
-
-						printf("1\n");
-					}
-					else if( SDL_PointInRect(&mouse, &green) ){
-
-						SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-
-						SDL_RenderFillRect(renderer, &green);
-
-						SDL_RenderDrawRect(renderer, &green);
-
-						SDL_RenderPresent(renderer);
-
-						printf("2\n");
-					}
-					else if( SDL_PointInRect(&mouse, &blue) ){
-
-						SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-
-						SDL_RenderFillRect(renderer, &blue);
-
-						SDL_RenderDrawRect(renderer, &blue);
-
-						SDL_RenderPresent(renderer);
-
-						printf("3\n");
 					}
 					break;
 
 			}
 
 		}
+
+		if( cooldown <= 0 ){
+			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+			SDL_RenderFillRect(renderer, &red);
+		}
+		
+		SDL_RenderDrawRect(renderer, &red);
+
+		if( cooldown <= 0 ){
+			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+			SDL_RenderFillRect(renderer, &green);
+		}
+		SDL_RenderDrawRect(renderer, &green);
+
+		if( cooldown <= 0 ){
+			SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+			SDL_RenderFillRect(renderer, &blue);	
+		}
+		SDL_RenderDrawRect(renderer, &blue);
+
+		SDL_RenderPresent(renderer);
+
+		SDL_Delay(1000/60);
 	}
 
 	return 0;
