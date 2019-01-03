@@ -76,7 +76,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 					//if collides with rect
 					if( SDL_PointInRect(&mouse, &red) && cooldown <= 0 ){
 
-						cooldown = 20;
+						cooldown = 30;
 
 						printf("1\n");
 
@@ -86,7 +86,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 					}
 					else if( SDL_PointInRect(&mouse, &green) && cooldown <= 0 ){
 						
-						cooldown = 20;
+						cooldown = 30;
 
 						printf("2\n");
 
@@ -96,7 +96,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 					}
 					else if( SDL_PointInRect(&mouse, &blue) && cooldown <= 0 ){
 						
-						cooldown = 20;
+						cooldown = 30;
 
 						printf("3\n");
 
@@ -110,20 +110,20 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 		}
 
-		if( cooldown <= 0 ){
+		if( cooldown <= 10 ){
 			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 			SDL_RenderFillRect(renderer, &red);
 		}
 		
 		SDL_RenderDrawRect(renderer, &red);
 
-		if( cooldown <= 0 ){
+		if( cooldown <= 10 ){
 			SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
 			SDL_RenderFillRect(renderer, &green);
 		}
 		SDL_RenderDrawRect(renderer, &green);
 
-		if( cooldown <= 0 ){
+		if( cooldown <= 10 ){
 			SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 			SDL_RenderFillRect(renderer, &blue);	
 		}
