@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "util.c"
 
 int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 {
+	initializeCounter();
+	int *sequence = mallocSequence(3);
+
 	//button cooldown
 	int cooldown = 0;
 
@@ -78,7 +82,8 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 						cooldown = 30;
 
-						printf("1\n");
+						addToSequence(sequence, getCounter(), 1);
+						printSequence(sequence, 3);
 
 						SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
 
@@ -88,7 +93,8 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 						
 						cooldown = 30;
 
-						printf("2\n");
+						addToSequence(sequence, getCounter(), 2);
+						printSequence(sequence, 3);
 
 						SDL_SetRenderDrawColor(renderer, 0, 100, 0, 255);
 
@@ -98,7 +104,8 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 						
 						cooldown = 30;
 
-						printf("3\n");
+						addToSequence(sequence, getCounter(), 3);
+						printSequence(sequence, 3);
 
 						SDL_SetRenderDrawColor(renderer, 0, 0, 100, 255);
 
