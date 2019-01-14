@@ -38,23 +38,47 @@ void increaseCounter()
 	counter += 1;
 }
 
+void decreaseCounter()
+{
+	counter -= 1;
+}
+
+
 int getCounter()
 {
 	return counter;
 }
 
-void addToSequence(int* sequence, int pos, int value)
+void addToSequence(int* sequence, int value)
 {
-	if(sequenceSize > 0){
-		sequence[pos] = value;
+	if(sequenceSize(sequence, 3) > 0){
+		sequence[getCounter()] = value;
 		increaseCounter();
 	}
 }
 
-void printSequence(int* sequence, int size)
+void printSequence(int* sequence)
 {
 	int i;
-	for( i = 0; i < size; i++ ){
+	for( i = 0; i < getCounter(); i++ ){
 		printf("%d: %d\n", i, sequence[i]);
+	}
+}
+
+int checkAndPop(int* sequence, int value){
+	if(sequence[(getCounter()-1)] == value){
+		printf("MATCH!\n");
+		sequence[(getCounter()-1)] = 0;
+		decreaseCounter();
+		if(getCounter() != 0){
+			return 1;
+		}
+		else{
+			return 2;
+		}
+	}
+	else{
+		printf("Ops, Game Over!\nReturning to main screen...\n");
+		return 0;
 	}
 }

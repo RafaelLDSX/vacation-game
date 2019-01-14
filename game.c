@@ -7,6 +7,9 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 	initializeCounter();
 	int *sequence = mallocSequence(3);
 
+	//state to identify if it's time to record buttons or check sequence (always starts on 0, which means 'record state')
+	int subState = 0;
+
 	//button cooldown
 	int cooldown = 0;
 
@@ -82,8 +85,13 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 						cooldown = 30;
 
-						addToSequence(sequence, getCounter(), 1);
-						printSequence(sequence, 3);
+						if(subState == 0){
+							addToSequence(sequence, 1);
+							printSequence(sequence);
+						}
+						else{
+							checkAndPop(sequence, 1);
+						}
 
 						SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
 
@@ -93,8 +101,13 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 						
 						cooldown = 30;
 
-						addToSequence(sequence, getCounter(), 2);
-						printSequence(sequence, 3);
+						if(subState == 0){
+							addToSequence(sequence, 2);
+							printSequence(sequence);
+						}
+						else{
+							checkAndPop(sequence, 2);
+						}
 
 						SDL_SetRenderDrawColor(renderer, 0, 100, 0, 255);
 
@@ -104,8 +117,13 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 						
 						cooldown = 30;
 
-						addToSequence(sequence, getCounter(), 3);
-						printSequence(sequence, 3);
+						if(subState == 0){
+							addToSequence(sequence, 3);
+							printSequence(sequence);
+						}
+						else{
+							checkAndPop(sequence, 3);
+						}
 
 						SDL_SetRenderDrawColor(renderer, 0, 0, 100, 255);
 
@@ -137,6 +155,11 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 		SDL_RenderDrawRect(renderer, &blue);
 
 		SDL_RenderPresent(renderer);
+
+		if(sequenceSize(sequence, 3) <= 0)
+		{
+			subState = 1;
+		}
 
 		SDL_Delay(1000/60);
 	}
