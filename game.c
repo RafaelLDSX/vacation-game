@@ -5,7 +5,11 @@
 int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 {
 	initializeCounter();
-	int *sequence = mallocSequence(3);
+
+	initializeDifficulty();
+
+	int difficultyCheck = getDifficulty();
+	int *sequence = (int *) mallocSequence(getDifficulty());
 
 	//state to identify if it's time to record buttons or check sequence (always starts on 0, which means 'record state')
 	int subState = 0;
@@ -156,10 +160,21 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 		SDL_RenderPresent(renderer);
 
-		if(sequenceSize(sequence, 3) <= 0)
+		if(sequenceSize(sequence, getDifficulty()) <= 0 && subState != 1)
 		{
+			printf("Time to check!\n");
 			subState = 1;
 		}
+
+		if(getDifficulty() != difficultyCheck){
+			printf("Difficulty Up! %d buttons now.\n", getDifficulty());
+			difficultyCheck = getDifficulty();
+			free(sequence);
+			sequence = mallocSequence(getDifficulty());
+			subState = 0;
+			printSequence(sequence);
+		}
+
 
 		SDL_Delay(1000/60);
 	}

@@ -2,6 +2,8 @@
 
 static int counter;
 
+static int difficulty;
+
 int* mallocSequence(int size)
 {
 	int *sequence = malloc( sizeof(int)*size );
@@ -33,6 +35,11 @@ void initializeCounter()
 	counter = 0;
 }
 
+void initializeDifficulty()
+{
+	difficulty = 3;
+}
+
 void increaseCounter()
 {
 	counter += 1;
@@ -49,10 +56,27 @@ int getCounter()
 	return counter;
 }
 
+void increaseDifficulty()
+{
+	difficulty += 1;
+}
+
+void decreaseDifficulty()
+{
+	difficulty -= 1;
+}
+
+
+int getDifficulty()
+{
+	return difficulty;
+}
+
 void addToSequence(int* sequence, int value)
 {
-	if(sequenceSize(sequence, 3) > 0){
+	if(sequenceSize(sequence, getDifficulty()) > 0){
 		sequence[getCounter()] = value;
+		printf("Added %d\n", value);
 		increaseCounter();
 	}
 }
@@ -60,25 +84,30 @@ void addToSequence(int* sequence, int value)
 void printSequence(int* sequence)
 {
 	int i;
-	for( i = 0; i < getCounter(); i++ ){
+	for( i = 0; i < getDifficulty(); i++ ){
 		printf("%d: %d\n", i, sequence[i]);
 	}
 }
 
-int checkAndPop(int* sequence, int value){
-	if(sequence[(getCounter()-1)] == value){
-		printf("MATCH!\n");
-		sequence[(getCounter()-1)] = 0;
-		decreaseCounter();
-		if(getCounter() != 0){
-			return 1;
+void checkAndPop(int* sequence, int value){
+	int i;
+
+	//finding index of the input to be checked 
+	for( i = 0; sequence[i] == 0 && i < getDifficulty(); i++ ){
+	}
+
+	//if there is input to be checked (aka 'i' not out of bounds)
+	if(i < getDifficulty()){
+		if(sequence[i] == value){
+			printf("MATCH!\n");
+			sequence[i] = 0;
+			decreaseCounter();
+			if(getCounter() == 0){
+				increaseDifficulty();
+			}
 		}
 		else{
-			return 2;
+			printf("Ops, Game Over!\nReturning to main screen...\n");
 		}
-	}
-	else{
-		printf("Ops, Game Over!\nReturning to main screen...\n");
-		return 0;
 	}
 }
