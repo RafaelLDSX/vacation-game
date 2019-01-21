@@ -4,7 +4,6 @@
 
 int main(void)
 {
-	//comentaŕio pra aprender git
 	//SDL Initialization
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
 
@@ -25,9 +24,6 @@ int main(void)
 
 	SDL_RenderClear(main_renderer);	
 
-	//Changing renderer color to draw points
-	SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, 255);
-
 	//creating rect to represent "start" option
 	SDL_Rect start;
 
@@ -36,12 +32,25 @@ int main(void)
 	start.h = 50;
 	start.w = 100;
 
+	SDL_Rect startRandom;
+
+	startRandom.x = 350;
+	startRandom.y = 375;
+	startRandom.h = 50;
+	startRandom.w = 100;
+
+	//Drawing the red button
+	SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, 255);
+	SDL_RenderFillRect(main_renderer, &start);
+	SDL_RenderDrawRect(main_renderer, &start);
+
+	//Drawing the blue button
+	SDL_SetRenderDrawColor(main_renderer, 0, 0, 255, 255);
+	SDL_RenderFillRect(main_renderer, &startRandom);
+	SDL_RenderDrawRect(main_renderer, &startRandom);
+
 	//Creating point to represent mouse position
 	SDL_Point mouse;
-
-	SDL_RenderFillRect(main_renderer, &start);
-
-	SDL_RenderDrawRect(main_renderer, &start);
 
 	//Actually drawing on screen
 	//SDL_RenderDrawPoint(main_renderer, 1, 1);
@@ -69,17 +78,46 @@ int main(void)
 					//writing in SDL_Point mouse its current position
 					SDL_GetMouseState(&mouse.x, &mouse.y);
 
-					//if collides with rect
+					//if collides with red rect
 					if( SDL_PointInRect(&mouse, &start) ){
 
 						//starting the real game
 						printf("Setting up game...\n");
+						printf("Starting game in choose sequence mode\n");
+						setGameMode(0);
 						game(main_renderer, e, mouse);
 
-						//redrawing start button after exiting from the game
+						//redrawing red and blue buttons after exiting from the game
+						//red
 						SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, 255);
 						SDL_RenderFillRect(main_renderer, &start);
 						SDL_RenderDrawRect(main_renderer, &start);
+						//blue
+						SDL_SetRenderDrawColor(main_renderer, 0, 0, 255, 255);
+						SDL_RenderFillRect(main_renderer, &startRandom);
+						SDL_RenderDrawRect(main_renderer, &startRandom);
+						//updating screen
+						SDL_RenderPresent(main_renderer);
+					}
+					//if collides with blue rect
+					if( SDL_PointInRect(&mouse, &startRandom) ){
+
+						//starting the real game
+						printf("Setting up game...\n");
+						printf("Starting game in random mode\n");
+						setGameMode(1);
+						game(main_renderer, e, mouse);
+
+						//redrawing red and blue buttons after exiting from the game
+						//red
+						SDL_SetRenderDrawColor(main_renderer, 255, 0, 0, 255);
+						SDL_RenderFillRect(main_renderer, &start);
+						SDL_RenderDrawRect(main_renderer, &start);
+						//blue
+						SDL_SetRenderDrawColor(main_renderer, 0, 0, 255, 255);
+						SDL_RenderFillRect(main_renderer, &startRandom);
+						SDL_RenderDrawRect(main_renderer, &startRandom);
+						//updating screen
 						SDL_RenderPresent(main_renderer);
 					}
 					break;

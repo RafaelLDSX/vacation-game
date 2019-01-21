@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include <time.h>
+#include <stdlib.h>
 #include "util.c"
 
 int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
@@ -10,6 +12,10 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 	int difficultyCheck = getDifficulty();
 	int *sequence = (int *) mallocSequence(getDifficulty());
+
+	time_t t;
+   /* Intializes random number generator */
+   srand((unsigned) time(&t));
 
 	//state to identify if it's time to record buttons or check sequence (always starts on 0, which means 'record state')
 	int subState = 0;
@@ -91,7 +97,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 
 						cooldown = 30;
 
-						if(subState == 0){
+						if(subState == 0 && gameMode == 0){
 							addToSequence(sequence, 1);
 							printSequence(sequence);
 						}
@@ -107,7 +113,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 						
 						cooldown = 30;
 
-						if(subState == 0){
+						if(subState == 0 && gameMode == 0){
 							addToSequence(sequence, 2);
 							printSequence(sequence);
 						}
@@ -123,7 +129,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 						
 						cooldown = 30;
 
-						if(subState == 0){
+						if(subState == 0 && gameMode == 0){
 							addToSequence(sequence, 3);
 							printSequence(sequence);
 						}
@@ -182,6 +188,16 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 			sequence = mallocSequence(getDifficulty());
 			subState = 0;
 			printSequence(sequence);
+		}
+
+		//sort sequence if its the correct gamemode and the correct substate
+		if(subState == 0 && gameMode == 1){
+			for(int i = 0; i < getDifficulty(); i++){
+				//sort numbers of the sequence (it goes from 0 to 2, thats why it needs +1)
+				int a = (rand() % 3)+1;
+				addToSequence(sequence, a);
+			}
+			subState = 1;
 		}
 
 

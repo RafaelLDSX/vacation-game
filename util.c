@@ -4,6 +4,8 @@ static int counter;
 
 static int difficulty;
 
+static int gameMode; //It stores the game mode being played (0 to player set sequence, 1 to random)
+
 int* mallocSequence(int size)
 {
 	int *sequence = malloc( sizeof(int)*size );
@@ -110,4 +112,11 @@ int checkAndPop(int* sequence, int value){
 		printf("Ops, Game Over!\nReturning to main screen...\n");
 		return 0;
 	}
+}
+
+void setGameMode(int i){
+	if(i == 0 || i == 1)
+		gameMode = i;
+	else
+		printf("invalid game mode selected\n");
 }
