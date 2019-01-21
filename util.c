@@ -91,6 +91,10 @@ void printSequence(int* sequence)
 	}
 }
 
+int getSequenceValue(int* sequence, int position){
+	return sequence[position];
+}
+
 int checkAndPop(int* sequence, int value){
 	int i;
 
