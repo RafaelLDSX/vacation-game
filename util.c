@@ -89,7 +89,7 @@ void printSequence(int* sequence)
 	}
 }
 
-void checkAndPop(int* sequence, int value){
+int checkAndPop(int* sequence, int value){
 	int i;
 
 	//finding index of the input to be checked 
@@ -97,17 +97,17 @@ void checkAndPop(int* sequence, int value){
 	}
 
 	//if there is input to be checked (aka 'i' not out of bounds)
-	if(i < getDifficulty()){
-		if(sequence[i] == value){
-			printf("MATCH!\n");
-			sequence[i] = 0;
-			decreaseCounter();
-			if(getCounter() == 0){
-				increaseDifficulty();
-			}
+	if(sequence[i] == value){
+		printf("MATCH!\n");
+		sequence[i] = 0;
+		decreaseCounter();
+		if(getCounter() == 0){
+			increaseDifficulty();
 		}
-		else{
-			printf("Ops, Game Over!\nReturning to main screen...\n");
-		}
+		return 1;
+	}
+	else{
+		printf("Ops, Game Over!\nReturning to main screen...\n");
+		return 0;
 	}
 }

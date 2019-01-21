@@ -17,6 +17,8 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 	//button cooldown
 	int cooldown = 0;
 
+	int hit = -1;
+
 	//turning screen to black
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
@@ -94,7 +96,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 							printSequence(sequence);
 						}
 						else{
-							checkAndPop(sequence, 1);
+							hit = checkAndPop(sequence, 1);
 						}
 
 						SDL_SetRenderDrawColor(renderer, 100, 0, 0, 255);
@@ -110,7 +112,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 							printSequence(sequence);
 						}
 						else{
-							checkAndPop(sequence, 2);
+							hit = checkAndPop(sequence, 2);
 						}
 
 						SDL_SetRenderDrawColor(renderer, 0, 100, 0, 255);
@@ -126,7 +128,7 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 							printSequence(sequence);
 						}
 						else{
-							checkAndPop(sequence, 3);
+							hit = checkAndPop(sequence, 3);
 						}
 
 						SDL_SetRenderDrawColor(renderer, 0, 0, 100, 255);
@@ -159,6 +161,13 @@ int game(SDL_Renderer *renderer, SDL_Event e, SDL_Point mouse)
 		SDL_RenderDrawRect(renderer, &blue);
 
 		SDL_RenderPresent(renderer);
+
+		if(hit == 0){
+			//blackening screen before exiting
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderClear(renderer);
+			return 0;
+		}
 
 		if(sequenceSize(sequence, getDifficulty()) <= 0 && subState != 1)
 		{
